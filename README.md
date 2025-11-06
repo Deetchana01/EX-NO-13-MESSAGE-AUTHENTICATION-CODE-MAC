@@ -26,9 +26,70 @@ To implement MESSAGE AUTHENTICATION CODE(MAC)
 
 ## Program:
 
+### NAME: DEETCHANA S 
+### REGISTER NUMBER: 212224220021
+```
+#include <stdio.h>
+#include <string.h>
+
+#define MAC_SIZE 32 // Define MAC size in bytes
+
+// Function to compute a simple MAC using XOR
+void computeMAC(const char *key, const char *message, char *mac) {
+    int key_len = strlen(key);
+    int msg_len = strlen(message);
+    
+    // XOR the key and message, repeating if necessary
+    for (int i = 0; i < MAC_SIZE; i++) {
+        mac[i] = key[i % key_len] ^ message[i % msg_len]; // Simple XOR operation
+    }
+    mac[MAC_SIZE] = '\0'; // Null-terminate the MAC string
+}
+
+int main() {
+    char key[100], message[100];
+    char mac[MAC_SIZE + 1]; // Buffer for MAC (+1 for null terminator)
+    char receivedMAC[MAC_SIZE + 1]; // Buffer for input of received MAC
+
+    // Step 1: Input secret key
+    printf("Enter the secret key: ");
+    scanf("%s", key);
+
+    // Step 2: Input the message
+    printf("Enter the message: ");
+    scanf("%s", message);
+
+    // Step 3: Compute the MAC
+    computeMAC(key, message, mac);
+
+    // Step 4: Display the computed MAC in hexadecimal
+    printf("Computed MAC (in hex): ");
+    for (int i = 0; i < MAC_SIZE; i++) {
+        printf("%02x", (unsigned char)mac[i]); // Print each byte as hex
+    }
+    printf("\n");
+
+    // Step 5: Input the received MAC (for verification)
+    printf("Enter the received MAC (as hex): ");
+    for (int i = 0; i < MAC_SIZE; i++) {
+        scanf("%02hhx", &receivedMAC[i]);
+    }
+
+    // Compare the computed MAC with the received MAC
+    if (memcmp(mac, receivedMAC, MAC_SIZE) == 0) {
+        printf("MAC verification successful. Message is authentic.\n");
+    } else {
+        printf("MAC verification failed. Message is not authentic.\n");
+    }
+
+    return 0;
+}
+```
 
 
 ## Output:
+<img width="1691" height="940" alt="image" src="https://github.com/user-attachments/assets/b82c169f-4bb9-40ca-94fc-f8d18a8256bd" />
+
 
 
 ## Result:
